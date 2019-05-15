@@ -1,0 +1,15 @@
+doctype html
+html
+  include /modules/ldui/ldui.pug
+  head
+    +css("https://cdn.loading.io/ldui/latest/ldui.min.css")
+    +css("https://cdn.loading.io/bootstrap/latest/bootstrap.min.css")
+  body.p-2
+    h1 hello
+    .btn.btn-outline-primary(data-action="fire") Hello 
+    br
+    iframe.my-2
+    +script("https://cdn.loading.io/ldui/latest/ldui.min.js")
+    +script("https://cdn.loading.io/bootstrap.native/latest/bootstrap.native.v4.min.js")
+    +script("/js/interface.js")
+    +script("/js/index.js")

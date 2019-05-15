@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    include /modules/ldui/ldui.pug
+  body
+    h1 editor
+    //- relative path not work
+    script
+      include ../../static/js/interface.js
+      include ../../static/js/editor.js
+    //+script("/editor.js")
+    //+script("http://localhost:3000/js/editor.js")
