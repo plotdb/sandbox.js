@@ -71,7 +71,6 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
       """
     )
 
-  
 sb = new Sandbox root: \iframe
 
 sb.load-url html: "/editor.html"
