@@ -1,16 +1,34 @@
 doctype html
 html
   head
+    link(rel="stylesheet",type="text/css",href="/css/index.css")
     link(rel="stylesheet",type="text/css",href="https://cdn.loading.io/ldui/latest/ldui.min.css")
     link(rel="stylesheet",type="text/css",href="https://cdn.loading.io/bootstrap/latest/bootstrap.min.css")
   body.p-2
-    h1 hello
-    .btn.btn-outline-primary(data-action="fire") Hello 
-    br
-    iframe.my-2
+    .text-center.mt-4
+      h1 Sandbox.js
+      p: a(href="https://github.com/plotdb/sandbox.js/") github repo
+    .w-1024.m-auto
+      .row
+        .col: .text-center.text-muted.mb-4: small Code
+        .col: .text-center.text-muted.mb-4: small Preview
+      .row
+        .col
+          textarea.p-2.
+            <html><body>
+              <center>
+              JS is sandboxed so getting cookie won't be allowed.
+              </center>
+              <script>
+                alert( document.cookie );
+              </script>
+            </body></html>
+
+        .col
+          iframe.shadow-sm
     script("https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise%2CArray.isArray%2CArray.from%2CElement.prototype.classList")
-    script("/assets/sandbox.js/sandbox.js")
-    script("https://cdn.loading.io/ldui/latest/ldui.min.js")
-    script("https://cdn.loading.io/bootstrap.native/latest/bootstrap.native.v4.min.js")
-    script("/js/interface.js")
-    script("/js/index.js")
+    script(src="/assets/sandbox.js/sandbox.js")
+    script(src="https://cdn.loading.io/ldui/latest/ldui.min.js")
+    script(src="https://cdn.loading.io/bootstrap.native/latest/bootstrap.native.v4.min.js")
+    script(src="/js/interface.js")
+    script(src="/js/index.js")
