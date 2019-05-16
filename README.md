@@ -39,15 +39,17 @@ var sandbox = new Sandbox(config);
    ```
 
  * reload() - reload sandbox.
- * load(obj), loadUrl(obj) - initialize sandbox content. obj has following structure:
+ * load(payload) - initialize sandbox content. payload can be a plain string or has following structure:
 
    ```
    {
-      "html": ( html code or url ),
-      "css":  ( html code or url ),
-      "js":   ( html code or url )
+      "html": (string or {url: HTML-URL} ),
+      "css":  (string or {url: CSS-URL} ),
+      "js":   (string or {url: JS-URL} )
    }
    ```
+
+   
 
 
 

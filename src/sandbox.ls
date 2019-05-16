@@ -31,66 +31,39 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
   reload: -> new Promise (res, rej) ~>
     @root.onload = ~> res @url
     @root.src = @url
-  load: (payload) -> new Promise (res, rej) ~>
-    @url = url = URL.createObjectURL(new Blob([payload + @rpc-code], {type: \text/html}))
-    @root.onload = -> res url
-    @root.src = url
-
-  load-url: (d) ->
+  load: (d="") ->
+    if typeof(d) == \string => return new Promise (res, rej) ~>
+      @url = url = URL.createObjectURL(new Blob([d + @rpc-code], {type: \text/html}))
+      @root.onload = -> res url
+      @root.src = url
     promises = <[html css js]>
       .map -> [it, d[it]]
       .filter -> it.1
       .map (n) ->
-        fetch n.1
-          .then (v) ->
-            if !(v and v.ok) => v.clone!text!then (t) -> e = new Error("#{v.status} #t") <<< {data: v}; throw e
-            v.text!
-          .then -> [n.0, it]
+        if n.1 and n.1.url =>
+          fetch n.1.url
+            .then (v) ->
+              if !(v and v.ok) => v.clone!text!then (t) -> e = new Error("#{v.status} #t") <<< {data: v}; throw e
+              v.text!
+            .then -> [n.0, it]
+        else Promise.resolve [n.0, n.1]
     Promise.all promises
       .then (list) ~>
-        payload = {}
-        list.map -> payload[it.0] = it.1
-        @load-hcj payload
+        d = {}
+        list.map -> d[it.0] = it.1
+        @load(
+          """
+          #{d.html}
+          <script>
+          //<![[CDATA
+          #{d.js}
+          //]]>
+          </script>
+          <style type="text/css">
+          /*<![[CDATA*/
+          #{d.css}
+          /*]]>*/
+          </style>
+          """
+        )
 
-
-
-  load-hcj: (d) ->
-    @load(
-      """
-      #{d.html}
-      <script>
-      //<![[CDATA
-      #{d.js}
-      //]]>
-      </script>
-      <style type="text/css">
-      /*<![[CDATA*/
-      #{d.css}
-      /*]]>*/
-      </style>
-      """
-    )
-
-sb = new Sandbox root: \iframe
-
-sb.load-url html: "/editor.html"
-  .then ->
-    console.log \loaded.
-    sb.send {act: \test, msg: \detail}
-    new Promise (res, rej) ->
-      setTimeout (->
-        config = do
-          html: "<html><head></head><body> Hello </body></html>"
-          js: """console.log("hello world!");"""
-          css: '''html,body { background: #f00; }'''
-        sb.load-hcj config
-          .then -> res!
-      ), 0
-  .then -> sb.load-url html: "/editor.html"
-  .then ->
-    new Promise (res, rej) ->
-      setTimeout (-> sb.reload!then -> res! ), 1000
-  .then ->
-    console.log \done.
-    sb.set-proxy {Interface}
-    sb.proxy.blah!
