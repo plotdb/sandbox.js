@@ -1,6 +1,4 @@
 Interface = do
-  blah: ->
-    console.log "interface blah invoked"
-    document.body.innerHTML = "ok"
-    #console.log "cookie: ", document.cookie
-    #document.body.innerHTML = document.cookie
+  func: ->
+    console.log "interface function (Interface.func) called"
+    document.body.innerHTML = "Interface.func called."
