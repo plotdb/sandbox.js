@@ -11,11 +11,15 @@ Sandbox = function(opt){
   if (!root) {
     this.root = root = document.createElement("iframe");
   }
+  (this.opt.className || '').split(' ').map(function(it){
+    return root.classList.add(it);
+  });
   this.container = container = (that = root && root.parentNode)
     ? that
     : this.opt.container ? typeof opt.container === 'string'
       ? document.querySelector(opt.container)
       : opt.container : void 8;
+  console.log(container, opt);
   if (!container) {
     this.container = container = document.body;
   }

@@ -14,6 +14,7 @@ var sandbox = new Sandbox(config);
    default to document.body if both root and container are omitted.
  * sandbox - iframe sandbox attributes. default to "allow-scripts allow-pointer-lock".
    Note: blob iframe in Firefox exploits host cookie with empty sandbox.
+ * className: space separated class list to add over the root element.
 
 
 ## Methods
