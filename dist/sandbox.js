@@ -19,7 +19,6 @@ Sandbox = function(opt){
     : this.opt.container ? typeof opt.container === 'string'
       ? document.querySelector(opt.container)
       : opt.container : void 8;
-  console.log(container, opt);
   if (!container) {
     this.container = container = document.body;
   }

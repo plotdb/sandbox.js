@@ -6,7 +6,6 @@ Sandbox = (opt = {}) ->
   (@opt.className or '').split(' ').map -> root.classList.add it
   @container = container = if root and root.parentNode => that else if @opt.container =>
     if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
-  console.log container, opt
   if !container => @container = container = document.body
   if !@root.parentNode => container.appendChild root
   # NOTE: blob iframe in firefox can read host cookie if sandbox is not specified.
