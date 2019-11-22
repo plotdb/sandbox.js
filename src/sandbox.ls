@@ -54,7 +54,7 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
         list.map -> d[it.0] = it.1
         @load(
           """
-          #{d.html}
+          #{d.html or ''}
           <script>
           //<![[CDATA
           #{d.js}
