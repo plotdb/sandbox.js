@@ -1,13 +1,16 @@
 doctype html
 html
+  include /../../static/assets/lib/ldui/pug/ldui.pug
   head
-    link(rel="stylesheet",type="text/css",href="/css/index.css")
-    link(rel="stylesheet",type="text/css",href="https://cdn.loading.io/ldui/latest/ldui.min.css")
-    link(rel="stylesheet",type="text/css",href="https://cdn.loading.io/bootstrap/latest/bootstrap.min.css")
+    +css("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    +css("/assets/lib/ldui/ldui.min.css")
+    +css("/css/index.css")
+
   body.p-2
     .text-center.mt-4
-      h1 Sandbox.js
+      h1 sandbox.js
       p: a(href="https://github.com/plotdb/sandbox.js/") github repo
+      p sandboxing code editing and preview in frontend to allow user generated code in website.
     .w-1024.m-auto
       .row
         .col: .text-center.text-muted.mb-4: small Code
@@ -27,9 +30,9 @@ html
         .col
           iframe.shadow-sm
       .text-center.m-4: .btn.btn-outline-primary(onclick="funcTest()") Functional Test
-    script("https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise%2CArray.isArray%2CArray.from%2CElement.prototype.classList")
+    +script("https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise%2CArray.isArray%2CArray.from%2CElement.prototype.classList")
+    +script("https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.27/dist/bootstrap-native-v4.min.js")
+    +script("/assets/lib/ldui/ldui.min.js")
     script(src="/assets/sandbox.js/sandbox.js")
-    script(src="https://cdn.loading.io/ldui/latest/ldui.min.js")
-    script(src="https://cdn.loading.io/bootstrap.native/latest/bootstrap.native.v4.min.js")
     script(src="/js/interface.js")
     script(src="/js/index.js")

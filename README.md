@@ -49,9 +49,6 @@ var sandbox = new Sandbox(config);
    }
    ```
 
-   
-
-
 
 ## License
 
