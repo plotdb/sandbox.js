@@ -15,6 +15,11 @@ var sandbox = new Sandbox(config);
  * sandbox - iframe sandbox attributes. default to "allow-scripts allow-pointer-lock".
    Note: blob iframe in Firefox exploits host cookie with empty sandbox.
  * className: space separated class list to add over the root element.
+ * window - works in standalone popup window. root and container won't be necessary when window provided.
+   window, if provided, should be an object containing following members:
+   - name - window name. randomly generated if omitted.
+   - width - window width. decided by sandbox.js if omitted.
+   - height - window height. decided by sandbox.js if omitted.
 
 
 ## Methods

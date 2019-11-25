@@ -1,15 +1,20 @@
 Sandbox = (opt = {}) ->
   @ <<< opt: opt, proxy: {}
-  @root = root = if opt.root =>
-    if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
-  if !root => @root = root = document.createElement("iframe")
-  (@opt.className or '').split(' ').map -> root.classList.add it
-  @container = container = if root and root.parentNode => that else if @opt.container =>
-    if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
-  if !container => @container = container = document.body
-  if !@root.parentNode => container.appendChild root
-  # NOTE: blob iframe in firefox can read host cookie if sandbox is not specified.
-  root.setAttribute \sandbox, (opt.sandbox or 'allow-scripts allow-pointer-lock')
+  if !opt.window
+    @root = root = if opt.root =>
+      if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
+    if !root => @root = root = document.createElement("iframe")
+    (@opt.className or '').split(' ').map -> root.classList.add it
+    @container = container = if root and root.parentNode => that else if @opt.container =>
+      if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
+    if !container => @container = container = document.body
+    if !@root.parentNode => container.appendChild root
+    # NOTE: blob iframe in firefox can read host cookie if sandbox is not specified.
+    root.setAttribute \sandbox, (opt.sandbox or 'allow-scripts allow-pointer-lock')
+  else
+    sa = opt.window
+    if !sa.name => sa.name = "sandboxjs-#{Math.random!toString 36 .substring 2}"
+    @window = window.open("",sa.name,"width=#{sa.width or 480},height=#{sa.height or 640}")
   @
 
 Sandbox.prototype = Object.create(Object.prototype) <<< do
@@ -21,22 +26,21 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
   }, false);
   </script>
   '''
-  send: (msg) -> @root.contentWindow.postMessage {type: \msg, payload: msg}, \*
+  send: (msg) -> (@window or @root.contentWindow).postMessage {type: \msg, payload: msg}, \*
   set-proxy: (obj) ->
     [name,obj] = [[k,v] for k,v of obj].0
     @proxy = proxy = {}
     for k,v of obj =>
       ((k, v) ~> proxy[k] = (... args) ~>
-        @root.contentWindow.postMessage {type: \rpc, name: name, func: k, args: args}, \*
+        (@window or @root.contentWindow).postMessage {type: \rpc, name: name, func: k, args: args}, \*
       ) k, v
   reload: -> new Promise (res, rej) ~>
-    @root.onload = ~> res @url
-    @root.src = @url
+    if @root => @root <<< onload: (~> res @url), src: @url
+    else window.open(@url, @opt.window.name)
   load: (d="") ->
     if typeof(d) == \string => return new Promise (res, rej) ~>
       @url = url = URL.createObjectURL(new Blob([d + @rpc-code], {type: \text/html}))
-      @root.onload = -> res url
-      @root.src = url
+      @reload!
     promises = <[html css js]>
       .map -> [it, d[it]]
       .filter -> it.1
