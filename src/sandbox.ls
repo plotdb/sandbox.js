@@ -1,44 +1,58 @@
 Sandbox = (opt = {}) ->
   @ <<< opt: opt, proxy: {}
-  if !opt.window
-    @root = root = if opt.root =>
-      if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
+
+  @root = root = if opt.root =>
+    if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
+  @container = container = if root and root.parentNode => that else if @opt.container =>
+    if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
+  if !container => container = @container = null #container = document.body
+  if @container =>
     if !root => @root = root = document.createElement("iframe")
-    (@opt.className or '').split(' ').map -> root.classList.add it
-    @container = container = if root and root.parentNode => that else if @opt.container =>
-      if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
-    if !container => @container = container = document.body
     if !@root.parentNode => container.appendChild root
     # NOTE: blob iframe in firefox can read host cookie if sandbox is not specified.
     root.setAttribute \sandbox, (opt.sandbox or 'allow-scripts allow-pointer-lock')
-  else
-    sa = opt.window
-    if !sa.name => sa.name = "sandboxjs-#{Math.random!toString 36 .substring 2}"
-    @window = window.open("",sa.name,"width=#{sa.width or 480},height=#{sa.height or 640}")
+    (@opt.className or '').split(' ').map -> root.classList.add it
+  if wopt = opt.window => @open-window wopt
   @
 
 Sandbox.prototype = Object.create(Object.prototype) <<< do
   rpc-code: '''
   <script>
   window.addEventListener("message", function(e) {
+  if(e.data.type == 'load') {
+    window.location.href = URL.createObjectURL(new Blob([e.data.args.content], {type: 'text/html'}));
+    return;
+  }
   if(!e || !e.data || e.data.type != 'rpc') return;
   window[e.data.name][e.data.func](e.data.args);
   }, false);
   </script>
   '''
-  send: (msg) -> (@window or @root.contentWindow).postMessage {type: \msg, payload: msg}, \*
+  open-window: (wopt = {}) -> new Promise (res, rej) ~>
+    if !wopt.name => wopt.name = "sandboxjs-#{Math.random!toString 36 .substring 2}"
+    url = URL.createObjectURL(new Blob([@rpc-code], {type: \text/html}))
+    @window = window.open(url,wopt.name,"width=#{wopt.width or 480},height=#{wopt.height or 640}")
+    @opt.window = wopt
+    @window.onload = -> res!
+
+  send: (msg) ->
+    [@window, (if @root => @root.contentWindow else null)].map ->
+      if it => it.postMessage {type: \msg, payload: msg}, \*
   set-proxy: (obj) ->
     [name,obj] = [[k,v] for k,v of obj].0
     @proxy = proxy = {}
     for k,v of obj =>
       ((k, v) ~> proxy[k] = (... args) ~>
-        (@window or @root.contentWindow).postMessage {type: \rpc, name: name, func: k, args: args}, \*
+        [@window, (if @root => @root.contentWindow else null)].map ->
+          if it => it.postMessage {type: \rpc, name: name, func: k, args: args}, \*
       ) k, v
   reload: -> new Promise (res, rej) ~>
     if @root => @root <<< onload: (~> res @url), src: @url
-    else window.open(@url, @opt.window.name)
+    if @opt.window => @window.postMessage {type: \load, args: {url: @url, content: @content} }
+
   load: (d="") ->
     if typeof(d) == \string => return new Promise (res, rej) ~>
+      @content = (d + @rpc-code)
       @url = url = URL.createObjectURL(new Blob([d + @rpc-code], {type: \text/html}))
       @reload!
     promises = <[html css js]>
