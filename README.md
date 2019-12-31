@@ -54,6 +54,47 @@ var sandbox = new Sandbox(config);
       "js":   (string or {url: JS-URL} )
    }
    ```
+ * openWindow(cfg) - open sandbox in a standalone window.
+   - cfg.name - window name.
+
+
+## Sample Usage
+
+iframe mode:
+```
+    /* create a sandbox instance */ 
+    var sandbox = new Sandbox({
+      container: 'selector-for-certain-node',
+      className: 'space separated class names'
+    });
+
+    /* load and render code */
+    sandbox.load({js: '...', html: '...', css: '...'});
+
+    /* you can still render it again in a standalone window */
+    sandbox.openWindow({name: "window-name"})
+      .then(function() { ... });
+```
+
+window mode:
+```
+    /* create a sandbox instance */ 
+    var sandbox = new Sandbox({
+      window: 'window-name'
+    });
+
+    /* load and render code */
+    sandbox.load({js: '...', html: '...', css: '...'});
+```
+
+you can also init with both modes:
+```
+    /* create a sandbox instance */ 
+    var sandbox = new Sandbox({
+      window: 'window-name',
+      container: 'selector-for-certain-node'
+    });
+```
 
 
 ## License
