@@ -23,7 +23,7 @@ Sandbox = function(opt){
     if (!this.root.parentNode) {
       container.appendChild(root);
     }
-    root.setAttribute('sandbox', opt.sandbox || 'allow-scripts allow-pointer-lock');
+    root.setAttribute('sandbox', opt.sandbox || 'allow-scripts allow-pointer-lock allow-popups');
     (this.opt.className || '').split(' ').map(function(it){
       return root.classList.add(it);
     });
