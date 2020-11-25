@@ -5,7 +5,7 @@ Sandboxing javascript in embedded iframe.
 
 ## Usage
 
-var sandbox = new Sandbox(config);
+var sb = new sandbox(config);
 
 ## Configurations
 
@@ -27,13 +27,13 @@ var sandbox = new Sandbox(config);
  * setProxy(({obj: obj}) - set an object as proxy interface. Proxy object must passed in an object like:
 
    ```
-   sandbox.setProxy({ Interface: Interface });
+   sb.setProxy({ Interface: Interface });
    ```
 
    once set, you can invoke corresponding object in sandbox with following:
 
    ```
-   sandbox.proxy.someFunc(args);
+   sb.proxy.someFunc(args);
    ```
 
    you must have the object ( e.g., Interface ) with the exact same name as a global object in sandbox context.
@@ -63,34 +63,34 @@ var sandbox = new Sandbox(config);
 iframe mode:
 ```
     /* create a sandbox instance */ 
-    var sandbox = new Sandbox({
+    var sb = new sandbox({
       container: 'selector-for-certain-node',
       className: 'space separated class names'
     });
 
     /* load and render code */
-    sandbox.load({js: '...', html: '...', css: '...'});
+    sb.load({js: '...', html: '...', css: '...'});
 
     /* you can still render it again in a standalone window */
-    sandbox.openWindow({name: "window-name"})
+    sb.openWindow({name: "window-name"})
       .then(function() { ... });
 ```
 
 window mode:
 ```
     /* create a sandbox instance */ 
-    var sandbox = new Sandbox({
+    var sb = new sandbox({
       window: 'window-name'
     });
 
     /* load and render code */
-    sandbox.load({js: '...', html: '...', css: '...'});
+    sb.load({js: '...', html: '...', css: '...'});
 ```
 
 you can also init with both modes:
 ```
     /* create a sandbox instance */ 
-    var sandbox = new Sandbox({
+    var sb = new sandbox({
       window: 'window-name',
       container: 'selector-for-certain-node'
     });
