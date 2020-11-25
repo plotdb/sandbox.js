@@ -11,7 +11,7 @@ Sandbox = (opt = {}) ->
     if !@root.parentNode => container.appendChild root
     # NOTE: blob iframe in firefox can read host cookie if sandbox is not specified.
     root.setAttribute \sandbox, (opt.sandbox or 'allow-scripts allow-pointer-lock allow-popups')
-    (@opt.className or '').split(' ').map -> root.classList.add it
+    (@opt.className or '').split(' ').filter(->it).map -> root.classList.add it
   if wopt = opt.window => @open-window wopt
   @
 
@@ -86,3 +86,4 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
           """
         )
 
+window.Sandbox = Sandbox
