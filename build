@@ -6,3 +6,6 @@ echo "minifying sandbox.js ..."
 ./node_modules/.bin/uglifyjs dist/sandbox.js > dist/sandbox.min.js
 echo "done."
 
+rm -rf web/static/assets/lib/sandbox.js/dev/
+mkdir -p web/static/assets/lib/sandbox.js/dev/
+cp dist/* web/static/assets/lib/sandbox.js/dev/
