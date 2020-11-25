@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 mkdir -p dist
 echo "build src/sandbox.ls -> dist/sandbox.js ..."
-./node_modules/.bin/lsc -cbp src/sandbox.ls > dist/sandbox.js
+./node_modules/.bin/lsc --no-header -cp src/sandbox.ls > dist/sandbox.js
 echo "minifying sandbox.js ..."
 ./node_modules/.bin/uglifyjs dist/sandbox.js > dist/sandbox.min.js
 echo "done."
-
 

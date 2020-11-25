@@ -1,10 +1,10 @@
 doctype html
 html
-  include /../../static/assets/lib/ldui/pug/ldui.pug
+  include /../../static/assets/lib/bootstrap.ldui/main/index.pug
   head
-    +css("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    +css("/assets/lib/ldui/ldui.min.css")
-    +css("/css/index.css")
+    +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
+    +css("assets/lib/bootstrap.ldui/main/bootstrap.ldui.min.css")
+    +css("css/index.css")
 
   body.p-2
     .text-center.mt-4
@@ -31,8 +31,10 @@ html
           iframe.shadow-sm
       .text-center.m-4: .btn.btn-outline-primary(onclick="funcTest()") Functional Test
     +script("https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise%2CArray.isArray%2CArray.from%2CElement.prototype.classList")
-    +script("https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.27/dist/bootstrap-native-v4.min.js")
-    +script("/assets/lib/ldui/ldui.min.js")
+    +script("assets/lib/bootstrap.native/main/bootstrap-native.min.js")
+    +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
+    +script("assets/lib/@loadingio/debounce.js/main/debounce.min.js")
+    +script("assets/lib/ldview/main/ldview.min.js")
     script(src="/assets/sandbox.js/sandbox.js")
     script(src="/js/interface.js")
     script(src="/js/index.js")

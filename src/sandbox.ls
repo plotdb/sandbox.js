@@ -1,4 +1,4 @@
-Sandbox = (opt = {}) ->
+sandbox = (opt = {}) ->
   @ <<< opt: opt, proxy: {}
 
   @root = root = if opt.root =>
@@ -15,7 +15,7 @@ Sandbox = (opt = {}) ->
   if wopt = opt.window => @open-window wopt
   @
 
-Sandbox.prototype = Object.create(Object.prototype) <<< do
+sandbox.prototype = Object.create(Object.prototype) <<< do
   rpc-code: '''
   <script>
   window.addEventListener("message", function(e) {
@@ -86,4 +86,4 @@ Sandbox.prototype = Object.create(Object.prototype) <<< do
           """
         )
 
-window.Sandbox = Sandbox
+window.sandbox = sandbox

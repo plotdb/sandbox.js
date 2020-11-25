@@ -1,4 +1,4 @@
-sb = new Sandbox root: \iframe
+sb = new sandbox root: \iframe
 
 func-test = ->
   console.log "[Load] string: 'hello world'"

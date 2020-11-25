@@ -1,6 +1,6 @@
 (function(){
-  var Sandbox;
-  Sandbox = function(opt){
+  var sandbox;
+  sandbox = function(opt){
     var root, container, that, wopt;
     opt == null && (opt = {});
     this.opt = opt;
@@ -35,7 +35,7 @@
     }
     return this;
   };
-  Sandbox.prototype = import$(Object.create(Object.prototype), {
+  sandbox.prototype = import$(Object.create(Object.prototype), {
     rpcCode: '<script>\nwindow.addEventListener("message", function(e) {\nif(e.data.type == \'load\') {\n  window.location.href = URL.createObjectURL(new Blob([e.data.args.content], {type: \'text/html\'}));\n  return;\n}\nif(!e || !e.data || e.data.type != \'rpc\') return;\nwindow[e.data.name][e.data.func](e.data.args);\n}, false);\n</script>',
     openWindow: function(wopt){
       var this$ = this;
@@ -169,7 +169,7 @@
       });
     }
   });
-  window.Sandbox = Sandbox;
+  window.sandbox = sandbox;
   function import$(obj, src){
     var own = {}.hasOwnProperty;
     for (var key in src) if (own.call(src, key)) obj[key] = src[key];
