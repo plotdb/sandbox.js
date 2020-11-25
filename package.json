@@ -20,14 +20,14 @@
     "start": "npx server -r web"
   },
   "devDependencies": {
-    "@loadingio/ldquery": "^1.1.1",
     "@loadingio/debounce.js": "0.0.1",
+    "@loadingio/ldquery": "^1.1.1",
     "bootstrap": "^4.5.3",
     "bootstrap.ldui": "github:loadingio/bootstrap.ldui",
     "bootstrap.native": "^3.0.14",
-    "ldview": "0.0.2",
-    "deploy": "^1.0.3",
+    "deploy": "github:zbryikt/deploy",
     "fedep": "0.0.8",
+    "ldview": "0.0.2",
     "livescript": "^1.6.0",
     "stylus": "^0.54.5",
     "template": "github:zbryikt/template#v2.1.6",
