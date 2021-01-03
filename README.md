@@ -96,6 +96,10 @@ you can also init with both modes:
     });
 ```
 
+## Resources
+
+ - how figma support plugins: https://www.figma.com/blog/how-we-built-the-figma-plugin-system/
+
 
 ## License
 
